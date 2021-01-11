@@ -272,13 +272,14 @@ public class SQLAdapter extends SQLLink {
         while (result.next()) {
             String invited = result.getString("invited"),
                     homeName = result.getString("home_name");
-            if (!invites.containsKey(invited)) {
+
+            if (homeName == null) {
+                invites.put(invited, null);
+            } else if (!invites.containsKey(invited)) {
                 invites.put(invited, new HashSet<>(Collections.singletonList(homeName)));
             } else {
-                if (homeName == null) {
-                    invites.put(invited, null);
-                } else {
-                    Set<String> homes = invites.get(invited);
+                Set<String> homes = invites.get(invited);
+                if (homes != null) {
                     homes.add(homeName);
                 }
             }
