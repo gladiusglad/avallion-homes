@@ -1,6 +1,6 @@
 main: net.avallion.survival.homes.AvallionHomes
 name: AvallionHomes
-version: "1.0"
+version: "1.0.1"
 api-version: "1.16"
 authors: [GladGladius]
 depend: [GladLib, LuckPerms]

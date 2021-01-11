@@ -188,19 +188,22 @@ public class Commands implements CommandExecutor {
                     switch (args.length) {
                         case 0:
                             return teleportHome(player, Homeowner.get(player), null);
-                        case 1:
+                        case 1: {
+                            Homeowner homeowner = Homeowner.get(player);
                             Player target = PlayerUtils.getPlayer(args[0]);
-                            if (target == null) {
-                                return teleportHome(player, Homeowner.get(player), args[0]);
+                            if (target == null || homeowner.hasHome(args[0])) {
+                                return teleportHome(player, homeowner, args[0]);
                             } else {
                                 return teleportHome(player, Homeowner.get(target), null);
                             }
-                        case 2:
-                            Homeowner homeowner = getName(sender, args[0]);
-                            if (homeowner == null) {
+                        }
+                        case 2: {
+                            Homeowner target = getName(sender, args[0]);
+                            if (target == null) {
                                 return false;
                             }
-                            return teleportHome(player, homeowner, args[1]);
+                            return teleportHome(player, target, args[1]);
+                        }
                         default:
                             msg.error(player, "Usage: /home [player] [home_name]");
                             return false;
@@ -262,7 +265,12 @@ public class Commands implements CommandExecutor {
                     return inviteCommon(invite, sender, homeowner, args[1], null);
                 } else {
                     Player player = (Player) sender;
-                    return inviteCommon(invite, sender, Homeowner.get(player), args[0], args[1]);
+                    Homeowner target = Homeowner.get(args[0]);
+                    if (target == null || !sender.hasPermission("avallionhomes.invite.other")) {
+                        return inviteCommon(invite, sender, Homeowner.get(player), args[0], args[1]);
+                    } else {
+                        return inviteCommon(invite, sender, target, args[1], null);
+                    }
                 }
             }
             case 3:
