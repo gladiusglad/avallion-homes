@@ -1,0 +1,95 @@
+main: net.avallion.survival.homes.AvallionHomes
+name: AvallionHomes
+version: "1.0"
+api-version: "1.16"
+authors: [GladGladius]
+depend: [GladLib, LuckPerms]
+
+commands:
+  home:
+    description: Teleport to your homes.
+    permission: avallionhomes.home
+    aliases: [h]
+  sethome:
+    description: Set a home at your location.
+    permission: avallionhomes.sethome
+  delhome:
+    description: Delete one of your homes.
+    permission: avallionhomes.delhome
+    aliases: [deletehome]
+  homes:
+    description: List your homes.
+    permission: avallionhomes.homes
+    aliases: [listhomes]
+  respawnhome:
+    description: Set the home you will respawn at.
+    permission: avallionhomes.respawnhome
+  homeinvite:
+    description: Allow a player to teleport to your homes.
+    permission: avallionhomes.invite
+    aliases: [invite]
+  homeuninvite:
+    description: Uninvite a player from your homes.
+    permission: avallionhomes.invite
+    aliases: [uninvite]
+  homeinvites:
+    description: List all players you've invited.
+    permission: avallionhomes.invites
+    aliases: [invites]
+  renamehome:
+    description: Rename your homes.
+    permission: avallionhomes.rename
+
+permissions:
+  avallionhomes.home:
+    default: true
+  avallionhomes.home.other:
+    default: op
+  avallionhomes.home.delay.bypass:
+    default: op
+  avallionhomes.home.delay.move:
+    default: op
+  avallionhomes.sethome:
+    default: true
+  avallionhomes.sethome.other:
+    default: op
+  avallionhomes.sethome.unlimited:
+    default: op
+  avallionhomes.sethome.max.1:
+    default: true
+  avallionhomes.sethome.max.2:
+    default: false
+  avallionhomes.sethome.max.3:
+    default: false
+  avallionhomes.delhome:
+    default: true
+  avallionhomes.delhome.other:
+    default: op
+  avallionhomes.homes:
+    default: true
+  avallionhomes.homes.other:
+    default: op
+  avallionhomes.respawnhome:
+    default: op
+  avallionhomes.invite:
+    default: op
+  avallionhomes.invite.other:
+    default: op
+  avallionhomes.invite.unlimited:
+    default: op
+  avallionhomes.invite.max.1:
+    default: false
+  avallionhomes.invite.max.2:
+    default: false
+  avallionhomes.invite.max.3:
+    default: false
+  avallionhomes.invites:
+    default: true
+  avallionhomes.invites.other:
+    default: op
+  avallionhomes.rename:
+    default: true
+  avallionhomes.rename.other:
+    default: op
+  avallionhomes.admin:
+    default: op

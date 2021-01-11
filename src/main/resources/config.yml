@@ -1,0 +1,23 @@
+prefix: "&aAvallion &7»&r "
+
+mysql:
+  host: "localhost"
+  port: 3306
+  database: "avallionhomes"
+  username: "root"
+  password: "root"
+  use-ssl: false
+
+default-name: "home"
+name-max-length: 16
+name-character-whitelist: "[a-z0-9]"
+
+allow-sethome-existing: false
+
+teleport-delay: 3
+
+respawn-at-home: true
+respawn-worlds:
+  - world
+  - world_nether
+  - world_the_end
