@@ -28,7 +28,7 @@ public class Homeowner {
     @Getter private final int playerId;
     @Getter private final UUID uuid;
     @Getter private final String name;
-    @Nullable private String respawnHome;
+    @Nullable private String mainHome;
     @Getter @Setter private Set<Home> homes = new HashSet<>();
     @Getter @Setter private Map<String, @Nullable Set<String>> invites = new HashMap<>();
 
@@ -213,13 +213,13 @@ public class Homeowner {
                 homeName.length() > nameMaxLength ||
                 aboveSetHomeLimit(homeName) ||
                 !homeName.matches(nameCharWhitelistRegex) ||
-                !Homeowner.allowSetHomeExisting && hasHome(homeName)
+                !allowSetHomeExisting && hasHome(homeName)
         ) return null;
 
         Home home = new Home(homeName, location);
         Home oldHome = deleteHome(homeName);
         if (sql != null) sql.addHome(playerId, home);
-        if (respawnHome == null || !hasHome(respawnHome)) setRespawnHome(homeName);
+        if (mainHome == null && homeName.equals(defaultName)) setMainHome(defaultName);
 
         homes.add(home);
         return oldHome;
@@ -257,27 +257,33 @@ public class Homeowner {
         return hadHomes;
     }
 
-    public void setRespawnHome(@Nullable String home, boolean updateSQL) {
+    void setMainHome(@Nullable String home, boolean updateSQL) {
         if (sql != null && updateSQL) sql.setRespawnHome(playerId, home);
-        respawnHome = home;
+        mainHome = home;
     }
 
-    public void setRespawnHome(@Nullable String home) {
-        setRespawnHome(home, true);
+    public void setMainHome(@Nullable String home) {
+        setMainHome(home, true);
     }
 
+    @NotNull
+    public String getMainHome() {
+        return (mainHome == null) ? defaultName : mainHome;
+    }
+
+    @Nullable
     public String getRespawnHome() {
         if (homes.size() == 0) return null;
-        if (respawnHome == null || !hasHome(respawnHome)) {
-            if (hasHome(Homeowner.defaultName)) {
-                setRespawnHome(Homeowner.defaultName);
+        if (mainHome == null || !hasHome(mainHome)) {
+            if (hasHome(defaultName)) {
+                return defaultName;
             } else {
-                Home home = getHomes().stream().findFirst().orElse(null);
+                Home home = getHomes().stream().min(Comparator.comparing(h -> h.name)).orElse(null);
                 if (home == null) return null;
-                setRespawnHome(home.name);
+                return home.name;
             }
         }
-        return respawnHome;
+        return mainHome;
     }
 
     public boolean canTeleportHome(@NotNull Player player, @NotNull String homeName) {

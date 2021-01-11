@@ -78,7 +78,7 @@ public class SQLAdapter extends SQLLink {
         if (!playerResult.next()) {
             savePlayer.setString(1, homeowner.getUuid().toString());
             savePlayer.setString(2, homeowner.getName());
-            savePlayer.setString(3, homeowner.getRespawnHome());
+            savePlayer.setString(3, homeowner.getMainHome());
             savePlayer.executeUpdate();
             ResultSet id = lastInsertId.executeQuery();
             id.next();
@@ -200,7 +200,7 @@ public class SQLAdapter extends SQLLink {
 
     private Homeowner toHomeowner(int playerId, UUID uuid, String username, String respawnHome) throws SQLException {
         Homeowner homeowner = new Homeowner(uuid, username, playerId);
-        homeowner.setRespawnHome(respawnHome, false);
+        homeowner.setMainHome(respawnHome, false);
         homeowner.setHomes(getHomes(playerId));
         homeowner.setInvites(getInvites(playerId));
         return homeowner;
@@ -214,7 +214,7 @@ public class SQLAdapter extends SQLLink {
             if (playerResult.next()) {
                 int playerId = playerResult.getInt("id");
                 Homeowner homeowner = new Homeowner(uuid, playerResult.getString("username"), playerId);
-                homeowner.setRespawnHome(playerResult.getString("respawn_home"), false);
+                homeowner.setMainHome(playerResult.getString("respawn_home"), false);
                 homeowner.setHomes(getHomes(playerId));
                 homeowner.setInvites(getInvites(playerId));
                 return homeowner;
@@ -235,7 +235,7 @@ public class SQLAdapter extends SQLLink {
             if (playerResult.next()) {
                 int playerId = playerResult.getInt("id");
                 Homeowner homeowner = new Homeowner(UUID.fromString(playerResult.getString("uuid")), name, playerId);
-                homeowner.setRespawnHome(playerResult.getString("respawn_home"), false);
+                homeowner.setMainHome(playerResult.getString("respawn_home"), false);
                 homeowner.setHomes(getHomes(playerId));
                 homeowner.setInvites(getInvites(playerId));
                 return homeowner;

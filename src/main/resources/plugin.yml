@@ -1,6 +1,6 @@
 main: net.avallion.survival.homes.AvallionHomes
 name: AvallionHomes
-version: "1.0.1"
+version: "1.1"
 api-version: "1.16"
 authors: [GladGladius]
 depend: [GladLib, LuckPerms]
@@ -22,8 +22,9 @@ commands:
     permission: avallionhomes.homes
     aliases: [listhomes]
   respawnhome:
-    description: Set the home you will respawn at.
+    description: Set your main home where you /home to and respawn at.
     permission: avallionhomes.respawnhome
+    aliases: [mainhome]
   homeinvite:
     description: Allow a player to teleport to your homes.
     permission: avallionhomes.invite

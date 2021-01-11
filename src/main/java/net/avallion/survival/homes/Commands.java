@@ -212,28 +212,21 @@ public class Commands implements CommandExecutor {
                     if (noPerm(sender, "avallionhomes.respawnhome")) return false;
                     switch (args.length) {
                         case 0:
-                            String respawnHome = Homeowner.get(player).getRespawnHome();
-                            if (respawnHome == null) {
-                                msg.error(player, "You do not have a home to respawn at. Type &6/respawnhome " +
-                                        "<home_name> &cto set your respawn location.");
-                                return false;
-                            } else {
-                                msg.send(player, "You currently respawn at home &a" + respawnHome + "&r. Type " +
-                                        "&e/respawnhome <home_name> &rto change your respawn location.");
-                                return true;
-                            }
+                            msg.send(player, "Your main home is &a" + Homeowner.get(player).getMainHome() + "&r. Type " +
+                                    "&e/mainhome <home_name> &rto change your main home.");
+                            return true;
                         case 1:
                             Homeowner homeowner = Homeowner.get(player);
                             if (homeowner.hasHome(args[0])) {
-                                homeowner.setRespawnHome(args[0]);
-                                msg.send(player, "Made home &a" + args[0] + " &ryour respawn location.");
+                                homeowner.setMainHome(args[0]);
+                                msg.send(player, "Made home &a" + args[0] + " &ryour main home.");
                                 return true;
                             } else {
                                 msg.error(player, "You do not have a home named &6" + args[0] + "&c!");
                                 return false;
                             }
                         default:
-                            msg.error(player,"Usage: /respawnhome [home_name]");
+                            msg.error(player,"Usage: /mainhome [home_name]");
                             return false;
                     }
             }
@@ -294,7 +287,7 @@ public class Commands implements CommandExecutor {
     @SuppressWarnings("ConstantConditions")
     private boolean teleportHome(Player sender, Homeowner homeowner, @Nullable String name) {
         boolean self = sender.getName().equals(homeowner.getName());
-        String homeName = (name == null) ? Homeowner.defaultName : name;
+        String homeName = (name == null) ? homeowner.getMainHome() : name;
         Home home = homeowner.getHome(homeName);
 
         if (self && name == null && home == null) return sendHomeList(sender, homeowner);
