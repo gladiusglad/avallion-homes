@@ -190,11 +190,23 @@ public class Commands implements CommandExecutor {
                             return teleportHome(player, Homeowner.get(player), null);
                         case 1: {
                             Homeowner homeowner = Homeowner.get(player);
-                            Player target = PlayerUtils.getPlayer(args[0]);
-                            if (target == null || homeowner.hasHome(args[0])) {
+                            if (homeowner.hasHome(args[0])) {
                                 return teleportHome(player, homeowner, args[0]);
                             } else {
-                                return teleportHome(player, Homeowner.get(target), null);
+                                Homeowner target;
+                                Player targetPlayer = PlayerUtils.getPlayer(args[0]);
+                                if (targetPlayer == null) {
+                                     target = Homeowner.get(args[0]);
+                                } else {
+                                    target = Homeowner.get(targetPlayer);
+                                }
+                                if (target == null) {
+                                    msg.error(sender,
+                                            "You do not have a home named &6" + args[0] + "&c, and player &6" + args[0] +
+                                                    " &cnot found!");
+                                    return false;
+                                }
+                                return teleportHome(player, target, null);
                             }
                         }
                         case 2: {
@@ -296,6 +308,10 @@ public class Commands implements CommandExecutor {
             msg.error(sender, ((self) ? "You do" : homeowner.getName() + " does") + " not have a home named &6" +
                     homeName + ((self || sender.hasPermission("avallionhomes.home.other")) ?
                     "&c!" : " &cor does not invite you to it!"));
+            if (!self && name == null) {
+                msg.error(sender, "If you mean to teleport to a home of yours named &6" +
+                        homeowner.getName().toLowerCase() + "&c, it doesn't exist either.");
+            }
             return false;
         } else {
             Consumer<Player> tpFunc = (player) -> {
@@ -577,16 +593,11 @@ public class Commands implements CommandExecutor {
     }
     
     private Homeowner getName(CommandSender sender, String name) {
-        try {
-            Homeowner homeowner = Homeowner.get(name);
-            if (homeowner == null) {
-                msg.error(sender, "Player " + name + " not found!");
-            }
-            return homeowner;
-        } catch (IllegalArgumentException e) {
-            msg.error(sender, "Player " + name + " not found!");
-            return null;
+        Homeowner homeowner = Homeowner.get(name);
+        if (homeowner == null) {
+            msg.error(sender, "Player &6" + name + " &cnot found!");
         }
+        return homeowner;
     }
 
     private boolean noPerm(CommandSender sender, String perm) {
