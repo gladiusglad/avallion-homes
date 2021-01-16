@@ -29,7 +29,7 @@ public class DelayedTeleport implements Runnable {
         this.tpFunc = tpFunc;
         this.tpTime = System.currentTimeMillis() + delay;
 
-        taskId = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 10, 10).getTaskId();
+        taskId = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 20, 20).getTaskId();
     }
 
     @Override
