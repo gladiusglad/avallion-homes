@@ -78,6 +78,10 @@ public class Homeowner {
         }
     }
 
+    static void closeSQL() {
+        sql.close();
+    }
+
     @Nullable
     private static Homeowner getExisting(@NotNull UUID uuid) {
         Homeowner cached = cachedHomeowners.stream().filter(h -> h.getUuid().equals(uuid)).findFirst().orElse(null);

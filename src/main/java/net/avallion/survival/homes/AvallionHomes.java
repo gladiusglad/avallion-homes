@@ -33,6 +33,7 @@ public class AvallionHomes extends JavaPlugin {
     @Override
     public void onDisable() {
         Homeowner.clearCache();
+        Homeowner.closeSQL();
     }
 
     public void load() {
